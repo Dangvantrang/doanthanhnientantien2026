@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Thông Tin Đoàn Trường Tân Tiến</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables cho bảng màu */
+        :root {
+            --primary-color: #00529c; /* Màu xanh Đoàn Thanh niên */
+            --secondary-color: #f7941d; /* Màu cam nổi bật */
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --card-bg: #ffffff;
+        }
+
+        /* Reset cơ bản */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header & Điều hướng */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 5%;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Container chính */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        /* Tiêu đề Chuyên mục */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Bố cục Gridview hàng ngang */
+        .grid-row {
+            display: grid;
+            /* Tự động chia cột, tối thiểu 280px, nếu màn hình rộng sẽ dàn đều hàng ngang */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 4rem;
+        }
+
+        /* Thiết kế Card (Thẻ bài viết) */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #cbd5e1;
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-tag {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #64748b;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .card-btn {
+            align-self: flex-start;
+            padding: 8px 20px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Gương mặt trẻ tiêu biểu - Avatar bo tròn */
+        .profile-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            padding: 3px;
+            margin: 0 auto 15px auto;
+            background-color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover .profile-img {
+            transform: scale(1.05);
+            border-color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 2rem 5%;
+            margin-top: auto;
+        }
+
+        /* Hiệu ứng xuất hiện khi cuộn trang (Fade In) */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CỔNG THÔNG TIN ĐOÀN TRƯỜNG THCS và THPT TÂN TIẾN</h1>
+        <nav>
+            <a href="#hoat-dong">Hoạt Động Nổi Bật</a>
+            <a href="#tin-tuc-moi">Tin Tức Mới</a>
+            <a href="#guong-mat">Gương Mặt Trẻ</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hoat-dong" class="fade-in">
+            <h2 class="section-title">Hoạt Động Nổi Bật</h2>
+            <div class="grid-row">
+                <div class="card">
+                    <img src="image/1.png" alt="Mùa hè xanh" class="card-img">
+                    <div class="card-content">
+                        <span class="card-tag">Phong trào</span>
+                        <h3 class="card-title">Chiến dịch Mùa Hè Xanh tình nguyện 2026</h3>
+                        <p class="card-desc">Hàng trăm đoàn viên thanh niên trường Tân Tiến ra quân dọn dẹp vệ sinh, làm đẹp cảnh quan địa phương.</p>
+                        <a href="#" class="card-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="image/2.png" alt="Hội thi tin học" class="card-img">
+                    <div class="card-content">
+                        <span class="card-tag">Học tập</span>
+                        <h3 class="card-title">Khai mạc Hội thi Tin học trẻ cấp trường</h3>
+                        <p class="card-desc">Tạo sân chơi công nghệ, phát triển tư duy lập trình và ứng dụng AI cho học sinh khối 11 và 12.</p>
+                        <a href="#" class="card-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="image/3.png" alt="Hội trại xuân" class="card-img">
+                    <div class="card-content">
+                        <span class="card-tag">Văn hóa</span>
+                        <h3 class="card-title">Sôi động Hội trại Xuân truyền thống</h3>
+                        <p class="card-desc">Các chi đoàn tham gia thi dựng lều trại, nấu ăn và biểu diễn văn nghệ chào mừng năm mới.</p>
+                        <a href="#" class="card-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tin-tuc-moi" class="fade-in">
+            <h2 class="section-title">Tin Tức Mới Nhất</h2>
+            <div class="grid-row">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-tag">Thông báo</span>
+                        <h3 class="card-title">Lịch sinh hoạt Đoàn tháng 4/2026</h3>
+                        <p class="card-desc">Triển khai kế hoạch tháng thanh niên và chuẩn bị cho các kỳ thi học kỳ sắp tới.</p>
+                        <a href="#" class="card-btn">Đọc tiếp</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-tag">Sự kiện</span>
+                        <h3 class="card-title">Lễ kết nạp Đoàn viên đợt 1</h3>
+                        <p class="card-desc">Chúc mừng 50 thanh niên ưu tú khối 10 chính thức đứng vào hàng ngũ của Đoàn.</p>
+                        <a href="#" class="card-btn">Đọc tiếp</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-tag">Đời sống</span>
+                        <h3 class="card-title">Phát động cuộc thi "Góc học tập xanh"</h3>
+                        <p class="card-desc">Khuyến khích học sinh trang trí góc học tập sáng tạo, gần gũi với thiên nhiên.</p>
+                        <a href="#" class="card-btn">Đọc tiếp</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="guong-mat" class="fade-in">
+            <h2 class="section-title">Gương Mặt Trẻ Tiêu Biểu</h2>
+            <div class="grid-row">
+                <div class="card profile-card">
+                    <img src="image/4.jpg" alt="Bí thư chi đoàn" class="profile-img">
+                    <div class="card-content">
+                        <h3 class="card-title">Nguyễn Thị Vân Anh</h3>
+                        <span class="card-tag" style="color: var(--primary-color);">Bí thư Chi đoàn 12A1</span>
+                        <p class="card-desc">Đạt giải Nhất học sinh giỏi cấp Tỉnh, tấm gương sáng trong phong trào thanh niên.</p>
+                    </div>
+                </div>
+                <div class="card profile-card">
+                    <img src="image/5.jpg" alt="Đoàn viên xuất sắc" class="profile-img">
+                    <div class="card-content">
+                        <h3 class="card-title">Trần Văn Bắc</h3>
+                        <span class="card-tag" style="color: var(--primary-color);">Lớp phó Học tập chi Đoàn 11A2</span>
+                        <p class="card-desc">Thành tích xuất sắc trong chiến dịch tình nguyện và tích cực tham gia CLB STEM.</p>
+                    </div>
+                </div>
+                <div class="card profile-card">
+                    <img src="image/6.jpg" alt="Cán bộ đoàn" class="profile-img">
+                    <div class="card-content">
+                        <h3 class="card-title">Lê Hoàng Sang</h3>
+                        <span class="card-tag" style="color: var(--primary-color);">Ủy viên BCH Đoàn trường</span>
+                        <p class="card-desc">Dẫn dắt thành công dự án chuyển đổi số trong quản lý nề nếp thanh niên.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Bản quyền thuộc về Đoàn Trường Tân Tiến.</p>
+        <p>Phát triển bởi nhóm học sinh lớp 12A1.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
